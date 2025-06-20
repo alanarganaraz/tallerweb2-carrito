@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { findUserByEmail, createUser } from '../repositories/user.repository.js'
 import { JWT_SECRET } from '../config/env.js'
+import { createCart as createCartRepo } from '../repositories/cart.repository.js'
 
 export const register = async (data) => {
   const { email, password } = data;
@@ -10,9 +11,12 @@ export const register = async (data) => {
 
   const hashed = await bcrypt.hash(password, 10)
 
+   const newCart = await createCartRepo();
+
   const bodyToRegister = {
     ...data,
-    password: hashed
+    password: hashed,
+    cartId: newCart._id
   }
   const user = await createUser(bodyToRegister)
   return { id: user._id, email: user.email }
@@ -25,6 +29,8 @@ export const login = async ({ email, password }) => {
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) throw new Error('Invalid credentials')
 
-  const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '1h' })
+    console.log(user, 'user user');
+    
+  const token = jwt.sign({ id: user._id, email: user.email, cartId: user.cartId }, JWT_SECRET, { expiresIn: '1h' })
   return { token }
 }
