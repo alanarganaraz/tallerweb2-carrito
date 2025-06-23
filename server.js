@@ -1,5 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
+
 import authRoutes from './src/routes/auth.routes.js'
 import productRoutes from './src/routes/product.routes.js'
 import cartRoutes from './src/routes/cart.routes.js'
@@ -9,6 +11,13 @@ dotenv.config()
 connectDB()
 
 const app = express()
+
+app.use(cors({
+  origin: 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
+}))
+
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
