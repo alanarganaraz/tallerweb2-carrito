@@ -11,6 +11,17 @@ export const addProductToCart = async (req, res) => {
   }
 }
 
+export const deleteItemCarts = async (req, res) => {
+  try {
+    const cartId = req.user.cartId
+    const userId = req.user.id
+    const cart = await cartServices.deleteItemsCart({ cartId, userId })
+    return res.status(cart.status).json(cart?.detail)
+  } catch (err) {
+    return res.status(400).json({ error: err.message })
+  }
+}
+
 export const getCartById = async (req, res) => {
   try {
     const cartId = req.user.cartId

@@ -4,22 +4,23 @@ import { findUserByEmail, createUser } from '../repositories/user.repository.js'
 import { JWT_SECRET } from '../config/env.js'
 import { createCart as createCartRepo } from '../repositories/cart.repository.js'
 
-export const register = async (data) => {
+export const register = async (data, isAdminRequest = false) => {
   const { email, password } = data;
   const existing = await findUserByEmail(email)
   if (existing) throw new Error('User already exists')
 
   const hashed = await bcrypt.hash(password, 10)
-
-   const newCart = await createCartRepo();
+  const newCart = await createCartRepo();
 
   const bodyToRegister = {
     ...data,
     password: hashed,
-    cartId: newCart._id
+    cartId: newCart._id,
+    role: isAdminRequest ? 'admin' : 'user'
   }
+
   const user = await createUser(bodyToRegister)
-  return { id: user._id, email: user.email }
+  return { id: user._id, email: user.email, role: user.role }
 }
 
 export const login = async ({ email, password }) => {
@@ -31,6 +32,6 @@ export const login = async ({ email, password }) => {
 
     console.log(user, 'user user');
     
-  const token = jwt.sign({ id: user._id, email: user.email, cartId: user.cartId }, JWT_SECRET, { expiresIn: '1h' })
+  const token = jwt.sign({ id: user._id, email: user.email, cartId: user.cartId, role: user.role }, JWT_SECRET, { expiresIn: '1h' })
   return { token }
 }
