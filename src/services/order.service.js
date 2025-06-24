@@ -48,8 +48,8 @@ export const getOrdersByUser = async ({userId, orderId}) => {
       throw error
 
     } catch (error) {
-        console.error('Error en el carrito:', error)
-        throw error.status ? error : new Error('Hubo un problema con el carrito')
+        console.error('Error en la orden:', error)
+        throw error.status ? error : new Error('Hubo un problema con la orden')
     }
     
    
