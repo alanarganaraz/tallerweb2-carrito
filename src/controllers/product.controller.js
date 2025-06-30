@@ -19,3 +19,13 @@ export const getProductById = async (req, res) => {
     return res.status(status).json({ message: err.message })
   }
 }
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const user = await productService.getAllProducts()
+    return res.status(201).json(user)
+  } catch (err) {
+    const status = err.status || 500
+    return res.status(status).json({ message: err.message })
+  }
+}

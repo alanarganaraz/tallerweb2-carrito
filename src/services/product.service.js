@@ -1,4 +1,4 @@
-import { createProduct as createProductRepo, getProductById as getProductByIdRepo } from '../repositories/product.repository.js'
+import { createProduct as createProductRepo, getProductById as getProductByIdRepo, getAllProducts as getAllProductsRepo } from '../repositories/product.repository.js'
 
 export const createProduct = async (productData) => {
   try {
@@ -26,6 +26,24 @@ export const createProduct = async (productData) => {
 export const getProductById = async (productData) => {
   try {
     const product = await getProductByIdRepo(productData)
+    
+    if (product) {
+      return { product }
+    }
+
+    const error = new Error('Producto inexistente')
+    error.status = 404
+    throw error
+
+  } catch (error) {
+    console.error('Error al obtener el producto:', error)
+    throw error.status ? error : new Error('No se pudo obtener el producto')
+  }
+}
+
+export const getAllProducts = async () => {
+  try {
+    const product = await getAllProductsRepo()
     
     if (product) {
       return { product }
