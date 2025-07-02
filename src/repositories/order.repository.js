@@ -17,6 +17,12 @@ export const updateOrderStatusById = async (orderId, newStatus) => {
   )
 }
 
-export const getAllOrders = async () => {
-  return await Order.find()
-}
+export const getAllOrders = async (filters) => {
+  const query = {};
+
+  if (filters.id) {
+    query._id = filters.id;
+  }
+
+  return await Order.find(query);
+};

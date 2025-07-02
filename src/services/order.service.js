@@ -73,9 +73,9 @@ export const createOrderFromCart = async ({ userId, cartId, paymentMethod, cardD
 
 }
 
-export const getAllOrders = async () => {
+export const getAllOrders = async (filters) => {
   try {
-    const getAllOrders = await orderRepo.getAllOrders()
+    const getAllOrders = await orderRepo.getAllOrders(filters)
 
     if (!getAllOrders) {
       const error = new Error('Fallo en ordenes')

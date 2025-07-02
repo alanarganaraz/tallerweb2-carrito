@@ -2,7 +2,20 @@ import { Product } from '../models/product.model.js'
 
 export const createProduct = (productData) => Product.create(productData)
 export const getProductById = (id) => Product.findById(id)
-export const getAllProducts = () => Product.find()
+export const getAllProducts = (filters) => {
+  const query = {};
+
+  if (filters.name) {
+    query.name = { $regex: filters.name, $options: 'i' };
+  }
+
+  if (filters.category) {
+    query.category = filters.category;
+  }
+
+  return Product.find(query);
+};
+
 export const decreaseProductStock = async (productId, quantity) => {
   return Product.findByIdAndUpdate(
     productId,

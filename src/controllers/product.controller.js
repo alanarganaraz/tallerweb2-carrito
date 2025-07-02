@@ -34,7 +34,9 @@ export const getProductById = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const user = await productService.getAllProducts()
+    const filters = req.query;
+    
+    const user = await productService.getAllProducts(filters)
     return res.status(201).json(user)
   } catch (err) {
     const status = err.status || 500

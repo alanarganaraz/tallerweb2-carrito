@@ -42,23 +42,22 @@ export const getProductById = async (productData) => {
   }
 }
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (filters) => {
   try {
-    const product = await getAllProductsRepo()
+    const products = await getAllProductsRepo(filters);
     
-    if (product) {
-      return { product }
+    if (products && products.length > 0) {
+      return { products };
     }
 
-    const error = new Error('Producto inexistente')
-    error.status = 404
-    throw error
-
+    const error = new Error('No se encontraron productos');
+    error.status = 404;
+    throw error;
   } catch (error) {
-    console.error('Error al obtener el producto:', error)
-    throw error.status ? error : new Error('No se pudo obtener el producto')
+    console.error('Error al obtener los productos:', error);
+    throw error.status ? error : new Error('No se pudo obtener los productos');
   }
-}
+};
 
 export const increaseProductStock = async (productId, quantity) => {
   try {

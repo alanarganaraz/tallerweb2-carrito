@@ -21,7 +21,8 @@ export const createOrder = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
     try {
-        const orders = await orderService.getAllOrders()
+        const filters = req.query;
+        const orders = await orderService.getAllOrders(filters)
         return res.status(200).json(orders)
     }
     catch (error) {

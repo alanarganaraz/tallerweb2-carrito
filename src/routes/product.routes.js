@@ -8,7 +8,7 @@ import { apiKeyMiddleware } from '../middlewares/apikey.js'
 const router = express.Router()
 
 router.post('/', apiKeyMiddleware, upload.single('image'), createProduct);
-router.get('/:id', apiKeyMiddleware, getProductById)
 router.get('/', apiKeyMiddleware, getAllProducts)
+router.get('/:id', apiKeyMiddleware, getProductById)
 
 export default router
