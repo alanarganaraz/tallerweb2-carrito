@@ -1,4 +1,5 @@
 import { createProduct as createProductRepo, getProductById as getProductByIdRepo, getAllProducts as getAllProductsRepo } from '../repositories/product.repository.js'
+import fs from 'fs'
 
 export const createProduct = async (productData) => {
   try {

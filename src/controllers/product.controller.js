@@ -2,10 +2,22 @@ import * as productService from '../services/product.service.js'
 
 export const createProduct = async (req, res) => {
   try {
-    const user = await productService.createProduct(req.body)
-    return res.status(201).json(user)
+    if (!req.file) {
+      return res.status(400).json({ message: 'Debe proporcionar una imagen' });
+    }
+
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    const productData = {
+      ...req.body,
+      image: base64Image
+    };
+
+    const product = await productService.createProduct(productData);
+
+    return res.status(201).json(product);
   } catch (err) {
-    return res.status(400).json({ error: err.message })
+    return res.status(400).json({ error: err.message });
   }
 }
 
