@@ -2,15 +2,15 @@ import * as productService from '../services/product.service.js'
 
 export const createProduct = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'Debe proporcionar una imagen' });
-    }
+    // if (!req.file) {
+    //   return res.status(400).json({ message: 'Debe proporcionar una imagen' });
+    // }
 
-    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    // const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
     const productData = {
       ...req.body,
-      image: base64Image
+      // image: base64Image
     };
 
     const product = await productService.createProduct(productData);
@@ -20,6 +20,7 @@ export const createProduct = async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 }
+
 
 export const getProductById = async (req, res) => {
   try {
