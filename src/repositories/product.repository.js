@@ -3,7 +3,9 @@ import { Product } from '../models/product.model.js'
 export const createProduct = (productData) => Product.create(productData)
 export const getProductById = (id) => Product.findById(id)
 export const getAllProducts = (filters) => {
-  const query = {};
+   const query = {
+    stock: { $gt: 0 }
+  };
 
   if (filters.name) {
     query.name = { $regex: filters.name, $options: 'i' };

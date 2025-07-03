@@ -21,8 +21,10 @@ export const createOrder = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
     try {
-        const filters = req.query;
-        const orders = await orderService.getAllOrders(filters)
+        const filters = req.user.id;
+        const isAdmin = req.user.role;
+        const obj = { filters, isAdmin }
+        const orders = await orderService.getAllOrders(obj)
         return res.status(200).json(orders)
     }
     catch (error) {
@@ -30,6 +32,20 @@ export const getAllOrders = async (req, res) => {
         return res.status(error.status || 400).json({ error: error.message })
     }
 }
+
+export const getAllOrdersByUser = async (req, res) => {
+    try {
+        const filters = req.user.id;
+        const isAdmin = req.user.role;
+        const orders = await orderService.getAllOrders({ filters, isAdmin })
+        return res.status(200).json(orders)
+    }
+    catch (error) {
+        console.error('Error al obtener las órdenes:', error)
+        return res.status(error.status || 400).json({ error: error.message })
+    }
+}
+
 
 export const changeOrderStatus = async (req, res) => {
     try {
@@ -52,6 +68,8 @@ export const changeOrderStatus = async (req, res) => {
 export const getOrderByUser = async (req, res) => {
     try {
         const userId = req.user.id
+        console.log(req.user, 'requser');
+        
         const orderId = req.params.id
         const orders = await orderService.getOrdersByUser({ userId, orderId })
 

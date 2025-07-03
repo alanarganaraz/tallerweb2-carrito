@@ -29,7 +29,7 @@ export const getProductById = async (productData) => {
     const product = await getProductByIdRepo(productData)
     
     if (product) {
-      return { product }
+      return { products: product }
     }
 
     const error = new Error('Producto inexistente')

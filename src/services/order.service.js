@@ -73,9 +73,9 @@ export const createOrderFromCart = async ({ userId, cartId, paymentMethod, cardD
 
 }
 
-export const getAllOrders = async (filters) => {
+export const getAllOrders = async (obj) => {
   try {
-    const getAllOrders = await orderRepo.getAllOrders(filters)
+    const getAllOrders = await orderRepo.getAllOrders(obj)
 
     if (!getAllOrders) {
       const error = new Error('Fallo en ordenes')
@@ -109,9 +109,14 @@ export const updateOrderStatus = async ({ orderId, newOrderStatus }) => {
 
 export const getOrdersByUser = async ({ userId, orderId }) => {
   try {
+    console.log(orderId, 'orderIdorderId');
+        console.log(userId, 'adasd');
+
     const orderByUser = await orderRepo.getOrdersByUser(orderId)
     const user = await findUserById(userId)
 
+    console.log(orderByUser?.userId.toString(), 'orderByUser');
+    
     if (orderByUser?.userId.toString() === userId || user.role === 'admin') {
       return {
         ...orderByUser.toObject?.() ?? orderByUser,
