@@ -20,15 +20,14 @@ export const updateOrderStatusById = async (orderId, newStatus) => {
 export const getAllOrders = async (obj) => {
   try {
     const query = {};
-    console.log(obj.isAdmin, 'asdasd');
-    
+  
     if (obj.isAdmin === 'admin') {
-      return await Order.find();
+      return await Order.find().sort({ createdAt: -1 });
     }
 
     if (obj.filters) {
       query.userId = obj.filters;
-      return await Order.find(query);
+      return await Order.find(query).sort({ createdAt: -1 });
     }
   } catch (error) {
     throw error.status ? error : new Error('Hubo un problema al obtener la orden por ID de usuario')

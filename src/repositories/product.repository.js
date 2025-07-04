@@ -15,7 +15,7 @@ export const getAllProducts = (filters) => {
     query.category = filters.category;
   }
 
-  return Product.find(query);
+  return Product.find(query).sort({ createdAt: -1 });
 };
 
 export const decreaseProductStock = async (productId, quantity) => {
