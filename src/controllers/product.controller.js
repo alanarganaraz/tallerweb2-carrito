@@ -2,15 +2,16 @@ import * as productService from '../services/product.service.js'
 
 export const createProduct = async (req, res) => {
   try {
-    // if (!req.file) {
-    //   return res.status(400).json({ message: 'Debe proporcionar una imagen' });
-    // }
-
-    // const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    let base64Image = null;
+    
+   
+    if (req.file) {
+      base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    }
 
     const productData = {
       ...req.body,
-      // image: base64Image
+      imageUrl: base64Image 
     };
 
     const product = await productService.createProduct(productData);
@@ -21,26 +22,24 @@ export const createProduct = async (req, res) => {
   }
 }
 
-
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await productService.getProductById(id)
-    return res.status(201).json(user)
+    const product = await productService.getProductById(id);
+    return res.status(200).json(product);
   } catch (err) {
-    const status = err.status || 500
-    return res.status(status).json({ message: err.message })
+    const status = err.status || 500;
+    return res.status(status).json({ message: err.message });
   }
 }
 
 export const getAllProducts = async (req, res) => {
   try {
     const filters = req.query;
-    
-    const user = await productService.getAllProducts(filters)
-    return res.status(201).json(user)
+    const products = await productService.getAllProducts(filters);
+    return res.status(200).json(products);
   } catch (err) {
-    const status = err.status || 500
-    return res.status(status).json({ message: err.message })
+    const status = err.status || 500;
+    return res.status(status).json({ message: err.message });
   }
 }
